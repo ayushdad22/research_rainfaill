@@ -1,7 +1,8 @@
 const CELL = { south: 53.00, north: 53.25, west: -6.50, east: -6.25 };
 
-let SAMPLE = 10;
-const MESH_SUBDIV = 150;
+let SAMPLE = 10;            // overwritten by elevation.json's "sample" value
+const ENHANCED_SUBDIV = 200; // render resolution of the enhanced (right) terrain
+const RAW_MAX_SUBDIV = 160;  // cap for the raw (left) terrain so very large grids stay performant
 const PLANE_SIZE = 11;
 const GAP = 7;
 
@@ -100,7 +101,7 @@ async function loadElevation() {
     if (res.ok) {
       const data = await res.json();
       if (data.sample) SAMPLE = data.sample;
-      setStatus('Loaded elevation.json');
+      setStatus('Loaded elevation.json (' + SAMPLE + 'x' + SAMPLE + ')');
       setSource('SRTM (cached)');
       return data.elevations;
     }
@@ -128,7 +129,7 @@ function buildLocationString() {
     for (let c = 0; c < SAMPLE; c++) {
       const lat = CELL.south + (CELL.north - CELL.south) * (r / (SAMPLE - 1));
       const lon = CELL.west + (CELL.east - CELL.west) * (c / (SAMPLE - 1));
-      locs.push(lat.toFixed(5) + ',' + lon.toFixed(5));
+      locs.push(lat.toFixed(6) + ',' + lon.toFixed(6));
     }
   return locs.join('|');
 }
@@ -212,8 +213,14 @@ function combinedHeight(u, v, wx, wz) {
 // ---------------- Build terrain ----------------
 let rawGroup = null, enhGroup = null;
 
-// view state (restored)
+// view state
 let wireOn = false, sidesOn = true, rotateOn = false, smoothShade = true;
+
+// the raw side renders at the real data resolution (SAMPLE-1 quads),
+// capped so a very large fetch doesn't tank performance
+function rawSubdiv() {
+  return Math.min(SAMPLE - 1, RAW_MAX_SUBDIV);
+}
 
 function buildSides(offsetX, N, heightFn) {
   const baseY = -3;
@@ -269,13 +276,11 @@ function buildTerrainGroup(offsetX, subdiv, heightFn, faceted) {
   geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
   geo.computeVertexNormals();
 
-  // faceted (flat) shading only applies to the raw side when smooth shading is OFF
   const flat = faceted && !smoothShade;
   const mesh = new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ vertexColors: true, flatShading: flat }));
   mesh.userData.isMesh = true;
   group.add(mesh);
 
-  // wireframe overlay
   const wm = new THREE.LineSegments(
     new THREE.WireframeGeometry(geo),
     new THREE.LineBasicMaterial({ color: 0x222222, transparent: true, opacity: 0.15 }));
@@ -283,8 +288,8 @@ function buildTerrainGroup(offsetX, subdiv, heightFn, faceted) {
   wm.userData.isWire = true;
   group.add(wm);
 
-  // block sides
-  const sm = buildSides(offsetX, subdiv > 40 ? 80 : subdiv, heightFn);
+  const sideN = Math.min(subdiv, 100);  // cap side resolution for performance
+  const sm = buildSides(offsetX, sideN, heightFn);
   sm.visible = sidesOn;
   sm.userData.isSide = true;
   group.add(sm);
@@ -296,10 +301,10 @@ function buildTerrainGroup(offsetX, subdiv, heightFn, faceted) {
 function rebuildAll() {
   if (rawGroup) scene.remove(rawGroup);
   if (enhGroup) scene.remove(enhGroup);
-  // RAW: low res (data grid), faceted, no procedural detail
-  rawGroup = buildTerrainGroup(LEFT_X, SAMPLE - 1, baseHeight, true);
-  // ENHANCED: high res + procedural detail, smooth
-  enhGroup = buildTerrainGroup(RIGHT_X, MESH_SUBDIV, combinedHeight, false);
+  // RAW: real data resolution, faceted, no procedural detail
+  rawGroup = buildTerrainGroup(LEFT_X, rawSubdiv(), baseHeight, true);
+  // ENHANCED: high render resolution + procedural detail, smooth
+  enhGroup = buildTerrainGroup(RIGHT_X, ENHANCED_SUBDIV, combinedHeight, false);
   scene.add(rawGroup);
   scene.add(enhGroup);
 }
@@ -321,7 +326,7 @@ bindSlider('df', 'df-val', v => { detailFrequency = v; rebuildNoise(); }, v => v
 bindSlider('sb', 'sb-val', v => slopeBoost = v, v => v.toFixed(1));
 bindSlider('vex', 'vex-val', v => vexFactor = v, v => v.toFixed(1) + 'x');
 
-// ---------------- UI: buttons (RESTORED) ----------------
+// ---------------- UI: buttons ----------------
 function bindButton(id, handler) {
   const el = document.getElementById(id);
   if (el) el.addEventListener('click', function () { handler(this); });
@@ -347,7 +352,7 @@ bindButton('btn-rotate', (btn) => {
 bindButton('btn-smooth', (btn) => {
   smoothShade = !smoothShade;
   btn.classList.toggle('on', smoothShade);
-  if (elevGrid) rebuildAll();   // rebuild so flat/smooth shading on the raw side updates
+  if (elevGrid) rebuildAll();
 });
 
 // ---------------- Animate ----------------
