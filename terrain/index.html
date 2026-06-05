@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Wicklow Terrain Comparison</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="mark"></div>
+
+  <div>
+    <div class="title">WICKLOW TERRAIN</div>
+    <div class="subtitle">SRTM vs Procedural Detail</div>
+  </div>
+</header>
+
+<div id="stage">
+
+  <canvas id="c"></canvas>
+
+  <div id="status">
+    <span class="dot"></span>
+    <span id="status-text">Loading elevation...</span>
+  </div>
+
+  <div class="panel-labels">
+    <div class="lab">
+      <div class="big">RAW</div>
+      <div class="small">SRTM</div>
+    </div>
+
+    <div class="lab">
+      <div class="big">DETAIL</div>
+      <div class="small">Procedural</div>
+    </div>
+  </div>
+
+</div>
+
+<sidebar>
+
+  <div>
+    <div class="panel-title">Elevation</div>
+
+    <div class="stat-row">
+      <span class="label">Source</span>
+      <span class="value" id="src">-</span>
+    </div>
+
+    <div class="stat-row">
+      <span class="label">Min</span>
+      <span class="value" id="min-elev">-</span>
+    </div>
+
+    <div class="stat-row">
+      <span class="label">Max</span>
+      <span class="value" id="max-elev">-</span>
+    </div>
+
+    <div class="stat-row">
+      <span class="label">Mean</span>
+      <span class="value" id="mean-elev">-</span>
+    </div>
+  </div>
+
+  <div>
+    <div class="panel-title">Parameters</div>
+
+    <div class="slider-row">
+      <label>
+        <span>Detail</span>
+        <span id="ds-val">0.15</span>
+      </label>
+      <input type="range" id="ds" min="0" max="0.5" step="0.01" value="0.15">
+    </div>
+
+    <div class="slider-row">
+      <label>
+        <span>Frequency</span>
+        <span id="df-val">2.0</span>
+      </label>
+      <input type="range" id="df" min="0.5" max="6" step="0.1" value="2.0">
+    </div>
+
+    <div class="slider-row">
+      <label>
+        <span>Roughness</span>
+        <span id="sb-val">1.0</span>
+      </label>
+      <input type="range" id="sb" min="0" max="3" step="0.1" value="1.0">
+    </div>
+
+    <div class="slider-row">
+      <label>
+        <span>Vertical Scale</span>
+        <span id="vex-val">3.0x</span>
+      </label>
+      <input type="range" id="vex" min="1" max="8" step="0.5" value="3">
+    </div>
+  </div>
+
+  <div>
+    <div class="panel-title">View</div>
+
+    <div class="btn-group">
+      <button class="toggle-btn" id="btn-wire">
+        WIREFRAME
+      </button>
+
+      <button class="toggle-btn" id="btn-rotate">
+        AUTO ROTATE
+      </button>
+
+      <button class="toggle-btn on" id="btn-sides">
+        BLOCK SIDES
+      </button>
+
+      <button class="toggle-btn on" id="btn-smooth">
+        SMOOTH SHADING
+      </button>
+    </div>
+  </div>
+
+  <div class="data-src">
+    SRTM 30m • OpenTopoData
+  </div>
+
+</sidebar>
+  <div class="data-src">Elevation: <a href="https://www.opentopodata.org/" target="_blank">OpenTopoData</a> (SRTM 30m)</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
