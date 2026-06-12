@@ -2,9 +2,9 @@
 name = "dublin-rainfall"
 version = "0.1.0"
 description = "Spatial rainfall forecasting in Dublin building on BU-LSTM-Attention"
-requires-python = ">=3.11"
+requires-python = ">=3.11,<3.12"
 dependencies = [
-    "numpy",
+    "numpy<2",
     "pandas",
     "scipy",
     "matplotlib",
@@ -16,6 +16,7 @@ dependencies = [
     "ipython",
     "shap",
     "xgboost",
-    "tensorflow",
-    # swap the line above for "torch" if the original paper uses PyTorch
+    "tensorflow>=2.15,<2.16",
+    "tqdm",
+    "joblib",
 ]
