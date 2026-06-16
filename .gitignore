@@ -14,10 +14,12 @@ result-*
 .direnv/
 .envrc.local
 
+paper/
+
 terrain/elevation.json
 terrain/*.tif
 terrain/*.tiff
-terrain/*.nc          # ERA5 netCDF files are large
+terrain/*.nc
 *.nc
 *.hgt
 *.zip
@@ -25,7 +27,7 @@ terrain/*.nc          # ERA5 netCDF files are large
 terrain/*.jpg
 terrain/*.jpeg
 terrain/*.png
-!terrain/screenshot*.png   # but DO allow screenshots if you name them that way
+!terrain/screenshot*.png
 
 *.h5
 *.keras
