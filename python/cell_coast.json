@@ -1,0 +1,114 @@
+{
+  "1,1": {
+    "row": 1,
+    "col": 1,
+    "sea_share": 0.0,
+    "coast_dist_km": null,
+    "class": "inland"
+  },
+  "1,2": {
+    "row": 1,
+    "col": 2,
+    "sea_share": 0.0,
+    "coast_dist_km": 20.5,
+    "class": "inland"
+  },
+  "1,3": {
+    "row": 1,
+    "col": 3,
+    "sea_share": 0.31,
+    "coast_dist_km": 3.2,
+    "class": "coastal"
+  },
+  "1,4": {
+    "row": 1,
+    "col": 4,
+    "sea_share": 1.0,
+    "coast_dist_km": 8.8,
+    "class": "marine"
+  },
+  "2,1": {
+    "row": 2,
+    "col": 1,
+    "sea_share": 0.0,
+    "coast_dist_km": null,
+    "class": "inland"
+  },
+  "2,2": {
+    "row": 2,
+    "col": 2,
+    "sea_share": 0.0,
+    "coast_dist_km": 20.4,
+    "class": "inland"
+  },
+  "2,3": {
+    "row": 2,
+    "col": 3,
+    "sea_share": 0.28,
+    "coast_dist_km": 3.2,
+    "class": "coastal"
+  },
+  "2,4": {
+    "row": 2,
+    "col": 4,
+    "sea_share": 1.0,
+    "coast_dist_km": 8.8,
+    "class": "marine"
+  },
+  "3,1": {
+    "row": 3,
+    "col": 1,
+    "sea_share": 0.0,
+    "coast_dist_km": null,
+    "class": "inland"
+  },
+  "3,2": {
+    "row": 3,
+    "col": 2,
+    "sea_share": 0.0,
+    "coast_dist_km": 11.9,
+    "class": "inland"
+  },
+  "3,3": {
+    "row": 3,
+    "col": 3,
+    "sea_share": 0.56,
+    "coast_dist_km": 3.2,
+    "class": "coastal"
+  },
+  "3,4": {
+    "row": 3,
+    "col": 4,
+    "sea_share": 1.0,
+    "coast_dist_km": 20.4,
+    "class": "marine"
+  },
+  "4,1": {
+    "row": 4,
+    "col": 1,
+    "sea_share": 0.0,
+    "coast_dist_km": null,
+    "class": "inland"
+  },
+  "4,2": {
+    "row": 4,
+    "col": 2,
+    "sea_share": 0.0,
+    "coast_dist_km": 8.7,
+    "class": "inland"
+  },
+  "4,3": {
+    "row": 4,
+    "col": 3,
+    "sea_share": 0.67,
+    "coast_dist_km": 3.2,
+    "class": "coastal"
+  },
+  "4,4": {
+    "row": 4,
+    "col": 4,
+    "sea_share": 1.0,
+    "coast_dist_km": 14.2,
+    "class": "marine"
+  }
+}
