@@ -40,7 +40,6 @@ models/
 checkpoints/
 runs/
 wandb/
-
 python/data/
 
 node_modules/
